@@ -1,3 +1,3 @@
 # Python-Code
 
-Repository containing Python code accumulated so far.
+Repository containing some Python code
