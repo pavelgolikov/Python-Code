@@ -108,13 +108,10 @@ def cycle_detection(g: GraphUndirNoWeight) -> bool:
 def mst_kruskal(g: GraphUndirNoWeight)-> list:
     """Return a list containint mst of g using Kruskal's algorithm.
     """
-    # lst is a list of endges that for mst
     lst = []
-    # sets - disjoint sets formed using vertices
     sets = {}
     for el in g.vertices:
         sets[el] = makeset(el)
-    # sort edges in ascending order
     sorted_ = sorted(g.edges, key=lambda tup: tup[2])
     for ed in sorted_:
         if find(sets[ed[0]]) != find(sets[ed[1]]):
@@ -127,9 +124,7 @@ def mst_penn(g: GraphUndirNoWeight, start) -> list:
     """Return a list containint mst of g using Penn's algorithm. Start
     is the starting vertex.
     """
-    # create mst_set
     mst_set = []
-    # assign key values to all vertices in the graph, originally None
     keys = {}
     for el in g.vertices:
         if el == start:
@@ -138,13 +133,9 @@ def mst_penn(g: GraphUndirNoWeight, start) -> list:
             keys[el] = 999
 
     while keys:
-        # pick vertex from keys with minimum value
         min_value_vertex = min(keys, key=keys.get)
-        # include min_value_vertex into mst_set
         mst_set.append((min_value_vertex, keys[min_value_vertex]))
-        # remove min_value_vertex from keys
         del keys[min_value_vertex]
-        # update keys
         for ed in g.edges:
             if ed[0] == min_value_vertex and ed[1] in keys.keys():
                 if ed[2] < keys[ed[1]]:
@@ -160,9 +151,7 @@ def dijikstra(g: GraphUndirNoWeight, source) -> list:
      of g using Dijkstra's algorithm.
     Source is the starting vertex.
     """
-    # create spt_set
     spt_set = []
-    # create a list of vertices that have not been visited
     distances = {}
     for el in g.vertices:
         if el == source:
@@ -172,21 +161,14 @@ def dijikstra(g: GraphUndirNoWeight, source) -> list:
     distances_queue = copy(distances)
 
     while distances_queue:
-        # pick vertex from keys with minimum value that is not in spt_set
         min_value_vertex = min(distances_queue, key=distances_queue.get)
-        # include min_value_vertex into spt_set
         spt_set.append((min_value_vertex, distances[min_value_vertex]))
-        # remove min_value_vertex from not_visited list
-        # update keys
         for ed in g.edges:
-            # for each adjecent node u
             if ed[0] == min_value_vertex and ed[1] in distances.keys():
-                # u = ed[1], v = ed[0], weight(u,v) = ed[2]
                 if ed[2] + distances[ed[0]] < distances[ed[1]]:
                     distances[ed[1]] = ed[2] + distances[ed[0]]
                     distances_queue[ed[1]] = ed[2] + distances_queue[ed[0]]
             elif ed[1] == min_value_vertex and ed[0] in distances.keys():
-                # u = ed[0], v = ed[1], weight(u,v) = ed[2]
                 if ed[2] + distances[ed[1]] < distances[ed[0]]:
                     distances[ed[0]] = ed[2] + distances[ed[1]]
                     distances_queue[ed[0]] = ed[2] + distances_queue[ed[1]]
@@ -215,7 +197,6 @@ def artic_point(gr: GraphUndirNoWeight):
         disc[ver] = time_
         low[ver] = disc[ver]
         child = 0
-        # print(ver, time_, disc[ver], low[ver])
         for v in g.adj_dict[ver]:
             if visited[v] is False:
                 # look at all adjacent vertices
@@ -224,7 +205,6 @@ def artic_point(gr: GraphUndirNoWeight):
                 # perform artic_point on the child
                 artic_detect(g, parent, visited, disc, low, v, time_+1)
                 low[ver] = min(low[ver], low[v])
-                # print(v, disc[v], low[v])
                 if parent[ver] is None and child > 1:
                     print(ver)
                 if parent[ver] is not None and low[v] >= disc[ver]:
@@ -322,7 +302,6 @@ def floyd_warshall(g: DirGraph) -> list:
     # initialize solution matrix as g's adhacency matrix
     sol_matrix = deepcopy(g.adj_matrix)
 
-    # 0 = a, 1 = b,
     for k in range(7):
         for i in range(7):
             for j in range(7):
